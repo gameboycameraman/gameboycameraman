@@ -14,7 +14,8 @@ img.onload = function() {
     // blackOrWhite();
     // randomDithering();
     // orderedDitheringThreeByThreeClustered();
-    orderedDitheringFourByFour();
+    // orderedDitheringFourByFour();
+    nearestPaletteColour();
 };
 
 var grayscale = function() {
@@ -124,6 +125,48 @@ var orderedDitheringThreeByThreeClustered = function() {
       data[i + 1] = 0; // green
       data[i + 2] = 0; // blue
     }
+  }
+  ctx.putImageData(imageData, 0, 0);
+}
+
+
+
+
+
+
+var nearestPaletteColour = function() {
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const data = imageData.data;
+
+  const gbColors = [
+    [15, 56, 15],
+    [48, 98, 48],
+    [139, 172, 15],
+    [155, 188, 15]
+  ]
+
+  var distanceColours = function(colour, colourToMatch) {
+    return Math.sqrt(Math.pow((colour[0] - colourToMatch[0]), 2) + Math.pow((colour[1] - colourToMatch[1]), 2) + Math.pow((colour[2] - colourToMatch[2]), 2));
+  }
+
+
+  for (var i = 0; i < data.length; i += 4) {
+    var currentPixel = [data[i], data[i + 1], data[i + 2]]
+    var shortestMatch = Number.MAX_VALUE;
+    var paletteIndex = 0;
+    for (var j = 0; j < gbColors.length; j++) {
+      var closestMatch = distanceColours(currentPixel, gbColors[j]);
+      // console.log("closestMatch", closestMatch);
+      // console.log("shortestMatch", shortestMatch);
+      // console.log("");
+      if (closestMatch < shortestMatch) {
+        shortestMatch = closestMatch;
+        paletteIndex = j;
+      }
+    }
+    data[i]     = gbColors[paletteIndex][0];
+    data[i + 1] = gbColors[paletteIndex][1];
+    data[i + 2] = gbColors[paletteIndex][2];
   }
   ctx.putImageData(imageData, 0, 0);
 }
