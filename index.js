@@ -97,11 +97,11 @@ var orderedDitheringThreeByThreeClustered = function() {
     [7, 5, 9]
   ];
 
-  // var thresholdPalette = [
-  //   [1, 7, 4],
-  //   [5, 8, 3],
-  //   [6, 2, 9]
-  // ];
+  var thresholdPalette = [
+    [1, 7, 4],
+    [5, 8, 3],
+    [6, 2, 9]
+  ];
 
   var scaleThreshold = function(threshold) {
     return Math.round(threshold * (255/ thresholdPalette.flat().length));
@@ -131,57 +131,64 @@ var orderedDitheringThreeByThreeClustered = function() {
 
 
 
+// var nearestPaletteColour = function() {
+//   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+//   const data = imageData.data;
+
+//   const gbColors = [
+//     [15, 56, 15],
+//     [48, 98, 48],
+//     [139, 172, 15],
+//     [155, 188, 15]
+//   ]
+
+//   var distanceColours = function(colour, colourToMatch) {
+//     return Math.sqrt(Math.pow((colour[0] - colourToMatch[0]), 2) + Math.pow((colour[1] - colourToMatch[1]), 2) + Math.pow((colour[2] - colourToMatch[2]), 2));
+//   }
+
+
+//   for (var i = 0; i < data.length; i += 4) {
+//     var currentPixel = [data[i], data[i + 1], data[i + 2]]
+//     var shortestMatch = Number.MAX_VALUE;
+//     var paletteIndex = 0;
+//     for (var j = 0; j < gbColors.length; j++) {
+//       var closestMatch = distanceColours(currentPixel, gbColors[j]);
+//       if (closestMatch < shortestMatch) {
+//         shortestMatch = closestMatch;
+//         paletteIndex = j;
+//       }
+//     }
+//     data[i]     = gbColors[paletteIndex][0];
+//     data[i + 1] = gbColors[paletteIndex][1];
+//     data[i + 2] = gbColors[paletteIndex][2];
+//   }
+//   ctx.putImageData(imageData, 0, 0);
+// }
 
 
 
-var nearestPaletteColour = function() {
+
+
+const gbGreens = [
+  [15, 56, 15],
+  [48, 98, 48],
+  [139, 172, 15],
+  [155, 188, 15]
+]
+
+const gbNB = [
+  [0, 0, 0],
+  [86, 86, 86],
+  [172, 172, 172],
+  [255, 255, 255]
+]
+
+const colourOrderedDithering = (colourPalette) => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   const data = imageData.data;
-
-  const gbColors = [
-    [15, 56, 15],
-    [48, 98, 48],
-    [139, 172, 15],
-    [155, 188, 15]
-  ]
-
-  var distanceColours = function(colour, colourToMatch) {
-    return Math.sqrt(Math.pow((colour[0] - colourToMatch[0]), 2) + Math.pow((colour[1] - colourToMatch[1]), 2) + Math.pow((colour[2] - colourToMatch[2]), 2));
-  }
-
-
-  for (var i = 0; i < data.length; i += 4) {
-    var currentPixel = [data[i], data[i + 1], data[i + 2]]
-    var shortestMatch = Number.MAX_VALUE;
-    var paletteIndex = 0;
-    for (var j = 0; j < gbColors.length; j++) {
-      var closestMatch = distanceColours(currentPixel, gbColors[j]);
-      // console.log("closestMatch", closestMatch);
-      // console.log("shortestMatch", shortestMatch);
-      // console.log("");
-      if (closestMatch < shortestMatch) {
-        shortestMatch = closestMatch;
-        paletteIndex = j;
-      }
-    }
-    data[i]     = gbColors[paletteIndex][0];
-    data[i + 1] = gbColors[paletteIndex][1];
-    data[i + 2] = gbColors[paletteIndex][2];
-  }
-  ctx.putImageData(imageData, 0, 0);
-}
-
-
-
-
-
-
-var orderedDitheringFourByFour = function() {
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
-
+  
   var thresholdPaletteEightByEight = [ 
-    [0, 32,  8, 40,  2, 34, 10, 42],   /* 8x8 Bayer ordered dithering  */
+    [ 0, 32,  8, 40,  2, 34, 10, 42],   /* 8x8 Bayer ordered dithering  */
     [48, 16, 56, 24, 50, 18, 58, 26],   /* pattern.  Each input pixel   */
     [12, 44,  4, 36, 14, 46,  6, 38],   /* is scaled to the 0..63 range */
     [60, 28, 52, 20, 62, 30, 54, 22],   /* before looking in this table */
@@ -190,28 +197,36 @@ var orderedDitheringFourByFour = function() {
     [15, 47,  7, 39, 13, 45,  5, 37],
     [63, 31, 55, 23, 61, 29, 53, 21] ];
 
-  var scaleThreshold = function(threshold) {
-    return Math.round(threshold * (255/ thresholdPaletteEightByEight.flat().length));
+  const distanceColours = (colour, colourToMatch) => {
+    return Math.sqrt(Math.pow((colour[0] - colourToMatch[0]), 2) + Math.pow((colour[1] - colourToMatch[1]), 2) + Math.pow((colour[2] - colourToMatch[2]), 2));
   }
 
-  newThreshold = thresholdPaletteEightByEight.map(palette => palette.map(scaleThreshold));
-
-  for (var currentPixel = 0; currentPixel < data.length; currentPixel += 4) {
+  for (let i = 0; i < data.length; i += 4) {
  
-    var x = ((currentPixel / 4) % canvas.width) % thresholdPaletteEightByEight.length;
-    var y = (Math.floor((currentPixel / 4) / canvas.width)) % thresholdPaletteEightByEight.length;
+    let x = ((i / 4) % canvas.width) % thresholdPaletteEightByEight.length;
+    let y = (Math.floor((i / 4) / canvas.width)) % thresholdPaletteEightByEight.length;
 
-    var avg = (data[currentPixel] + data[currentPixel + 1] + data[currentPixel + 2]) / 3;
+    let preCalculatedThreshold = (thresholdPaletteEightByEight[y][x] * 1/64) - 0.5
+    let redPixel   = data[i]     + (255/colourPalette.length) * preCalculatedThreshold;
+    let bluePixel  = data[i + 1] + (255/colourPalette.length) * preCalculatedThreshold;
+    let greenPixel = data[i + 2] + (255/colourPalette.length) * preCalculatedThreshold;
+    let fullPixel  = [redPixel, bluePixel, greenPixel];
 
-    if (avg >= newThreshold[y][x]) {
-      data[currentPixel]     = 255; // red
-      data[currentPixel + 1] = 255; // green
-      data[currentPixel + 2] = 255; // blue
-    } else {
-      data[currentPixel]     = 0; // red
-      data[currentPixel + 1] = 0; // green
-      data[currentPixel + 2] = 0; // blue
+    let shortestMatch = Number.MAX_VALUE;
+    let paletteIndex = 0;
+
+    for (let j = 0; j < colourPalette.length; j++) {
+      let closestMatch = distanceColours(fullPixel, colourPalette[j]);
+      if (closestMatch < shortestMatch) {
+        shortestMatch = closestMatch;
+        paletteIndex = j;
+      }
     }
+
+    data[i]     = colourPalette[paletteIndex][0];
+    data[i + 1] = colourPalette[paletteIndex][1];
+    data[i + 2] = colourPalette[paletteIndex][2];
+
   }
   ctx.putImageData(imageData, 0, 0);
 }
