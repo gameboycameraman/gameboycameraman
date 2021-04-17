@@ -1,22 +1,90 @@
-var img = new Image();
-img.crossOrigin = 'anonymous';
-img.src = 'https://i.imgur.com/F4ww2He.jpg';
+// var img = new Image();
+// img.crossOrigin = 'anonymous';
+// img.src = 'https://i.imgur.com/F4ww2He.jpg';
 
-var canvas = document.getElementById('image-ici');
-canvas.height = 333;
-canvas.width = 500;
+const canvas = document.getElementById('canvas-id');
+const ctx = canvas.getContext('2d');
+const video = document.querySelector('video');
+var constraints = {video: { facingMode: "user" }, audio: false};
+const width = 128;
+const height = 112;
+canvas.width = width;
+canvas.height = height;
+window.requestAnimationFrame = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+                               window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
 
-var ctx = canvas.getContext('2d');
+const getMedia = () => {
+  navigator.mediaDevices.getUserMedia(constraints)
+  .then(function(mediaStream) {
+    video.srcObject = mediaStream;
+    video.onloadedmetadata = function(e) {
+      video.play();
+    };
+  })
+  .catch(function(err) { console.log(err.name + ": " + err.message); }); // always check for errors at the end.
+}
 
-img.onload = function() {
-    ctx.drawImage(img, 0, 0);
-    // grayscale();
-    // blackOrWhite();
-    // randomDithering();
-    // orderedDitheringThreeByThreeClustered();
-    // orderedDitheringFourByFour();
-    nearestPaletteColour();
-};
+getMedia();
+
+video.addEventListener('play', () => {
+  const step = () => {
+    return setInterval(() => {
+      let [drawingHeight, drawingWidth] = scaleImage(video);
+      let xOffset = canvas.width / 2 - drawingWidth / 2;
+      let yOffset = canvas.height / 2 - drawingHeight / 2;
+      ctx.drawImage(video, xOffset, yOffset, drawingWidth, drawingHeight);
+      colourOrderedDithering(gbNB, ctx, width, height);
+    }, 200);
+    // requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+});
+
+const switchCamera = () => {
+  switch (constraints.video.facingMode) {
+    case "user":
+      constraints.video = { facingMode: "environment" };
+      break
+    case "environment":
+      constraints.video = { facingMode: "user" };
+  }
+  getMedia();
+}
+
+const scaleImage = (image) => {
+  let newHeight, newWidth
+  if (image.videoWidth > image.videoHeight) {
+    newHeight = height;
+    newWidth = (image.videoWidth * height) / image.videoHeight;
+  } else {
+    newWidth = width;
+    newHeight = (image.videoHeight * width) / image.videoWidth;
+  }
+  return [newHeight, newWidth];
+}
+
+const setImageWidth = (originalHeight, originalWidth, newHeight) => {
+  return Math.floor((originalWidth * newHeight) / originalHeight);
+}
+
+// img.onload = function() {
+//     imgWidth = img.naturalWidth;
+//     imgHeight = img.naturalHeight;
+//     newWidth = setImageWidth(imgHeight, imgWidth, height);
+//     var wrh = img.width / img.height;
+//     var centerWidth = canvas.width;
+//     var centerHeight = centerWidth / wrh;
+//     if (centerHeight > canvas.height) {
+//       centerHeight = canvas.height;
+//       centerWidth = centerHeight * wrh;
+//     }
+//     var xOffset = -(centerWidth < canvas.width ? ((canvas.width - centerWidth) / 2) : 0);
+//     var yOffset = -(centerHeight < canvas.height ? ((canvas.height - centerHeight) / 2) : 0);
+//     ctx.drawImage(img,yOffset,xOffset,newWidth,height);
+//     // colourOrderedDithering(gbNB);
+// };
+
+
 
 var grayscale = function() {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -229,4 +297,58 @@ const colourOrderedDithering = (colourPalette) => {
 
   }
   ctx.putImageData(imageData, 0, 0);
+}
+
+const pauseVideo = () => {
+  video.pause();
+  toggleButton("pause");
+}
+
+const playVideo = () => {
+  video.play();
+  toggleButton("play");
+}
+
+// Working version for Browser
+// const saveStill = () => {
+//   let image = new Image();
+//   image.src = canvas.toDataURL("image/jpeg", 1.0);
+//   const link = document.createElement("a");
+//   link.setAttribute('href', image.src);
+//   link.setAttribute("download", "gameboycameralive_picture");
+//   link.click();
+// }
+
+// open a new page where I can download the picture
+const saveStill = () => {
+  let image = new Image();
+  image.src = canvas.toDataURL("image/jpeg", 1.0);
+  var w = window.open("");
+  w.document.write(image.outerHTML);
+}
+
+const hideButton = (buttonName) => {
+  return buttonName.classList.add("hide-element");
+}
+
+const showButton = (buttonName) => {
+  return buttonName.classList.remove("hide-element");
+}
+
+const toggleButton = (current) => {
+  const pauseButton = document.getElementById("pause-button");
+  const saveButton = document.getElementById("save-button");
+  const discardButton = document.getElementById("discard-button");
+  const switchButton = document.getElementById("switch-button");
+  if (current === "pause") {
+      hideButton(pauseButton);
+      hideButton(switchButton);
+      showButton(saveButton);
+      showButton(discardButton);
+  } else {
+      hideButton(saveButton);
+      hideButton(discardButton);
+      showButton(pauseButton);
+      showButton(switchButton);
+  }
 }

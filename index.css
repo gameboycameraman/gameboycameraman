@@ -1,0 +1,59 @@
+body {
+  background-color: #dfff9a;
+  width: 100%;
+  margin: 0px;
+}
+
+.container {
+  width: 100%;
+}
+
+.resize {
+  max-width: 640px;
+  max-height: 560px;
+  image-rendering: pixelated;
+}
+
+.webcam-video {
+  display:flex;
+  width: 100%;
+  align-items: center;
+}
+
+.button-center {
+  display: flex;
+  width: 100%;
+}
+
+.center-element {
+  justify-content: center;
+}
+
+.space-above-2 {
+  margin-top: 2rem;
+}
+
+.space-above-4 {
+  margin-top: 4rem;
+}
+
+.canvas-element {
+  border: 20px solid white;
+  object-fit: cover;
+  width: 100%;
+  height: auto;
+  margin: 5%;
+}
+
+.button-shape {
+  padding: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-width: 5px;
+  background-color: #EFEFEF;
+  width: 13rem;
+}
+
+.hide-element {
+  display: none;
+}

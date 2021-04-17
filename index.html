@@ -1,12 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Je fais un test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta content-type="application/force-download">
+  <link rel="stylesheet" type="text/css" href="index.css"/>
+  <title>Gameboycameraman's Camera</title>
 </head>
 <body>
-    <canvas id="image-ici" class="grayscale"></canvas>
-    <script src="index.js"></script>
+  <div class="container">
+    <div class="webcam-video center-element">
+      <video class="hide-element" muted playsinline></video>
+      <canvas id="canvas-id" class="resize canvas-element">
+      </canvas>
+    </div>
+    <div class="button-center center-element">
+      <button id="pause-button" class="button-shape" onclick="pauseVideo()" >Take picture</button>
+      <button id="switch-button" class="button-shape" onclick="switchCamera()" >Switch camera</button>
+      <button id="save-button" class="button-shape hide-element" onclick="saveStill()" >Save</button>
+      <button id="discard-button" class="button-shape hide-element" onclick="playVideo()" >Discard</button>
+    </div>
+    <div class="output">
+      <img id="photo" alt=""/>
+    </div>
+  </div>
+  <script src="index.js"></script>
 </body>
 </html>
