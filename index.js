@@ -311,20 +311,26 @@ const playVideo = () => {
 //   link.click();
 // }
 
-// open a new page where I can download the picture
-// const saveStill = () => {
-//   let image = new Image();
-//   image.src = canvas.toDataURL("image/jpeg", 1.0);
-//   var w = window.open("");
-//   w.document.write(image.outerHTML);
-// }
-
 // Create a new img tag and display the photo taken and can save from there
 const saveStill = () => {
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  
+  const pixelPerfectPicture = nearestNeighbourInterpolation(imageData);
+  const clampedArray = new Uint8ClampedArray(pixelPerfectPicture);
+  console.log(clampedArray.length);
+  console.log(clampedArray);
+  let newImageData = new ImageData(640, 560);
+  newImageData.data.set(clampedArray);
+  console.log(newImageData);
+  ctx.canvas.width = 640;
+  ctx.canvas.height = 560;
+  ctx.putImageData(newImageData, 0, 0);
   const image = document.createElement("img");
   image.src = canvas.toDataURL("image/jpeg", 1.0);
   const gbPicture = document.getElementById('image-gallery').appendChild(image);
   gbPicture.classList.add("gameboy-picture");
+  ctx.canvas.width = 128;
+  ctx.canvas.height = 112;
 }
 
 const hideButton = (buttonName) => {
