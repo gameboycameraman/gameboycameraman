@@ -1,7 +1,3 @@
-// var img = new Image();
-// img.crossOrigin = 'anonymous';
-// img.src = 'https://i.imgur.com/F4ww2He.jpg';
-
 const canvas = document.getElementById('canvas-id');
 const ctx = canvas.getContext('2d');
 const video = document.querySelector('video');
@@ -66,25 +62,6 @@ const scaleImage = (image) => {
 const setImageWidth = (originalHeight, originalWidth, newHeight) => {
   return Math.floor((originalWidth * newHeight) / originalHeight);
 }
-
-// img.onload = function() {
-//     imgWidth = img.naturalWidth;
-//     imgHeight = img.naturalHeight;
-//     newWidth = setImageWidth(imgHeight, imgWidth, height);
-//     var wrh = img.width / img.height;
-//     var centerWidth = canvas.width;
-//     var centerHeight = centerWidth / wrh;
-//     if (centerHeight > canvas.height) {
-//       centerHeight = canvas.height;
-//       centerWidth = centerHeight * wrh;
-//     }
-//     var xOffset = -(centerWidth < canvas.width ? ((canvas.width - centerWidth) / 2) : 0);
-//     var yOffset = -(centerHeight < canvas.height ? ((canvas.height - centerHeight) / 2) : 0);
-//     ctx.drawImage(img,yOffset,xOffset,newWidth,height);
-//     // colourOrderedDithering(gbNB);
-// };
-
-
 
 var grayscale = function() {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -196,46 +173,6 @@ var orderedDitheringThreeByThreeClustered = function() {
   }
   ctx.putImageData(imageData, 0, 0);
 }
-
-
-
-// var nearestPaletteColour = function() {
-//   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-//   const data = imageData.data;
-
-//   const gbColors = [
-//     [15, 56, 15],
-//     [48, 98, 48],
-//     [139, 172, 15],
-//     [155, 188, 15]
-//   ]
-
-//   var distanceColours = function(colour, colourToMatch) {
-//     return Math.sqrt(Math.pow((colour[0] - colourToMatch[0]), 2) + Math.pow((colour[1] - colourToMatch[1]), 2) + Math.pow((colour[2] - colourToMatch[2]), 2));
-//   }
-
-
-//   for (var i = 0; i < data.length; i += 4) {
-//     var currentPixel = [data[i], data[i + 1], data[i + 2]]
-//     var shortestMatch = Number.MAX_VALUE;
-//     var paletteIndex = 0;
-//     for (var j = 0; j < gbColors.length; j++) {
-//       var closestMatch = distanceColours(currentPixel, gbColors[j]);
-//       if (closestMatch < shortestMatch) {
-//         shortestMatch = closestMatch;
-//         paletteIndex = j;
-//       }
-//     }
-//     data[i]     = gbColors[paletteIndex][0];
-//     data[i + 1] = gbColors[paletteIndex][1];
-//     data[i + 2] = gbColors[paletteIndex][2];
-//   }
-//   ctx.putImageData(imageData, 0, 0);
-// }
-
-
-
-
 
 const gbGreens = [
   [15, 56, 15],
