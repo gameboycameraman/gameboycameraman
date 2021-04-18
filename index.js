@@ -236,6 +236,61 @@ const colourOrderedDithering = (colourPalette) => {
   ctx.putImageData(imageData, 0, 0);
 }
 
+const decomposeImage = (image, width) => {
+  const newImageArray = new Array;
+  const groupPixelsArray = new Array;
+  const imageValues = image.length;
+  for (i = 0; i < imageValues; i += 4) {
+    const pixel = Array.from(image.slice(i, i + 4));
+    groupPixelsArray.push(pixel);
+  }
+  for (i = 0; i < groupPixelsArray.length; i += width) {
+    newImageArray.push(groupPixelsArray.slice(i, ((i + 1) * width)));
+  }
+  return newImageArray;
+}
+
+// column = width
+// row = height 
+
+const nearestNeighbourInterpolation = (image) => {
+  const multiplier = 5;
+  const matrix = decomposeImage(image.data, image.width);
+  let newSizeHeightMatrix = matrix.length * multiplier;
+  let newSizeWidthMatrix = matrix[0].length * multiplier;
+  let ratioHeightMatrix = matrix.length/newSizeHeightMatrix;
+  let ratioWidthMatrix = matrix[0].length/newSizeWidthMatrix;
+  let rowPositions = new Array;
+  let columnPositions = new Array;
+  for (i = 1; i < newSizeWidthMatrix + 1; i++) {
+    columnPositions.push(i);
+  }
+  for (i = 1; i < newSizeHeightMatrix + 1; i++) {
+    rowPositions.push(i);
+  }
+  rowPositions    = rowPositions.map(e => Math.ceil(e * ratioHeightMatrix));
+  columnPositions = columnPositions.map(e => Math.ceil(e * ratioWidthMatrix));
+  const rows = new Array;
+  for (j = 0; j < matrix.length; j++) {
+    const newArray = new Array;
+    for (k = 0; k < columnPositions.length; k += multiplier) {
+      if (((k/multiplier) + 1) === columnPositions[k]) {
+        for (l = 0; l < multiplier; l++) {
+          newArray.push(matrix[j][(k/multiplier)]);
+        }
+      }
+    }
+    rows.push(newArray);
+  }
+  const finalArray = new Array;
+  for (m = 0; m < rows.length; m++) {
+    for (l = 0; l < multiplier; l++) {
+      finalArray.push(rows[m]);
+    }
+  }
+  return finalArray.flat().flat();
+}
+
 const pauseVideo = () => {
   video.pause();
   toggleButton("pause");
