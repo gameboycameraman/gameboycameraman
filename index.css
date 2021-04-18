@@ -54,6 +54,11 @@ body {
   width: 13rem;
 }
 
+.gameboy-picture {
+  border: 10px solid white;
+  margin: 1rem;
+}
+
 .hide-element {
   display: none;
 }

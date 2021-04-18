@@ -320,11 +320,19 @@ const playVideo = () => {
 // }
 
 // open a new page where I can download the picture
+// const saveStill = () => {
+//   let image = new Image();
+//   image.src = canvas.toDataURL("image/jpeg", 1.0);
+//   var w = window.open("");
+//   w.document.write(image.outerHTML);
+// }
+
+// Create a new img tag and display the photo taken and can save from there
 const saveStill = () => {
-  let image = new Image();
+  const image = document.createElement("img");
   image.src = canvas.toDataURL("image/jpeg", 1.0);
-  var w = window.open("");
-  w.document.write(image.outerHTML);
+  const gbPicture = document.getElementById('image-gallery').appendChild(image);
+  gbPicture.classList.add("gameboy-picture");
 }
 
 const hideButton = (buttonName) => {
