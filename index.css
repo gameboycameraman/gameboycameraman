@@ -14,7 +14,7 @@ body {
   image-rendering: pixelated;
 }
 
-.webcam-video {
+.image-parent {
   display:flex;
   width: 100%;
   align-items: center;
@@ -23,6 +23,7 @@ body {
 .button-center {
   display: flex;
   width: 100%;
+  justify-content: center;
 }
 
 .center-element {
@@ -37,7 +38,7 @@ body {
   margin-top: 4rem;
 }
 
-.canvas-element {
+.image-element {
   border: 20px solid white;
   object-fit: cover;
   width: 100%;
@@ -56,7 +57,17 @@ body {
 
 .gameboy-picture {
   border: 10px solid white;
+  width: 80%;
   margin: 1rem;
+}
+
+.gallery {
+  display:flex;
+  width: 100%;
+  align-items: center;
+  margin-top: 2rem;
+  flex-wrap: wrap-reverse;
+  justify-content: center;
 }
 
 .hide-element {
