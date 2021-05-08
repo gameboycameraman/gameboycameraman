@@ -303,25 +303,31 @@ const playVideo = () => {
 
 // Working version for Browser
 const saveStillDesktop = () => {
-  let image = new Image();
+  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+  const pixelPerfectPicture = nearestNeighbourInterpolation(imageData);
+  const clampedArray = new Uint8ClampedArray(pixelPerfectPicture);
+  let newImageData = new ImageData(640, 560);
+  newImageData.data.set(clampedArray);
+  ctx.canvas.width = 640;
+  ctx.canvas.height = 560;
+  ctx.putImageData(newImageData, 0, 0);
+  const image = document.createElement("img");
   image.src = canvas.toDataURL("image/jpeg", 1.0);
   const link = document.createElement("a");
   link.setAttribute('href', image.src);
   link.setAttribute("download", "gameboycameralive_picture");
   link.click();
+  ctx.canvas.width = 128;
+  ctx.canvas.height = 112;
 }
 
 // Create a new img tag and display the photo taken and can save from there
 const saveStillMobile = () => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  
   const pixelPerfectPicture = nearestNeighbourInterpolation(imageData);
   const clampedArray = new Uint8ClampedArray(pixelPerfectPicture);
-  console.log(clampedArray.length);
-  console.log(clampedArray);
   let newImageData = new ImageData(640, 560);
   newImageData.data.set(clampedArray);
-  console.log(newImageData);
   ctx.canvas.width = 640;
   ctx.canvas.height = 560;
   ctx.putImageData(newImageData, 0, 0);
