@@ -63,8 +63,13 @@ body {
 
 .gameboy-picture {
   border: 10px solid white;
-  width: 80%;
   margin: 1rem;
+}
+
+@media only screen and (max-width: 900px) {
+  .gameboy-picture {
+    width: 80%;
+  }
 }
 
 .gallery {
