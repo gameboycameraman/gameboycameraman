@@ -302,17 +302,17 @@ const playVideo = () => {
 }
 
 // Working version for Browser
-// const saveStill = () => {
-//   let image = new Image();
-//   image.src = canvas.toDataURL("image/jpeg", 1.0);
-//   const link = document.createElement("a");
-//   link.setAttribute('href', image.src);
-//   link.setAttribute("download", "gameboycameralive_picture");
-//   link.click();
-// }
+const saveStillDesktop = () => {
+  let image = new Image();
+  image.src = canvas.toDataURL("image/jpeg", 1.0);
+  const link = document.createElement("a");
+  link.setAttribute('href', image.src);
+  link.setAttribute("download", "gameboycameralive_picture");
+  link.click();
+}
 
 // Create a new img tag and display the photo taken and can save from there
-const saveStill = () => {
+const saveStillMobile = () => {
   const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
   
   const pixelPerfectPicture = nearestNeighbourInterpolation(imageData);
@@ -332,6 +332,19 @@ const saveStill = () => {
   ctx.canvas.width = 128;
   ctx.canvas.height = 112;
 }
+
+const isItMobile = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+}
+
+const setupSaveButton = () => {
+  if (isItMobile()) {
+    console.log('Change for mobile');
+    document.getElementById("save-button").onclick = function() { saveStillMobile(); }
+  }
+}
+
+setupSaveButton();
 
 const hideButton = (buttonName) => {
   return buttonName.classList.add("hide-element");
