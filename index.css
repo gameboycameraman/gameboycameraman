@@ -45,10 +45,12 @@ body {
 
 .image-element {
   border: 20px solid white;
+  /* border: 0.4rem outset #EFEFEF; */
+  /* border: 0.4rem outset #767676; */
   object-fit: cover;
   width: 100%;
   height: auto;
-  margin: 5%;
+  margin: 4%;
 }
 
 .button-shape {
@@ -104,12 +106,10 @@ body {
 
 .copy-element {
   margin: auto;
-  padding: 2rem;
-  max-width: 900px;
+  padding: 30px;
+  max-width: 608px;
   background-color: #EFEFEF;
-  border: 0.4rem inset #EFEFEF;
-  border-color: #858585 #767676;
-  text-align: center;
+  border: 0.4rem outset #767676;
 }
 
 .copy-font {
