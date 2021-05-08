@@ -59,6 +59,7 @@ body {
   margin-right: 1rem;
   border-width: 5px;
   background-color: #EFEFEF;
+  border: 0.4rem outset #767676;
   width: 13rem;
   font-family: Superscript, sans-serif;
 }
