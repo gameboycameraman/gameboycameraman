@@ -4,6 +4,11 @@ body {
   margin: 0px;
 }
 
+@font-face { 
+  font-family: Superscript; 
+  src: url("fonts/superscript/SUPERSCR.TTF") format("truetype"); 
+} 
+
 .container {
   width: 100%;
 }
@@ -53,6 +58,7 @@ body {
   border-width: 5px;
   background-color: #EFEFEF;
   width: 13rem;
+  font-family: Superscript, sans-serif;
 }
 
 .gameboy-picture {
@@ -72,4 +78,39 @@ body {
 
 .hide-element {
   display: none;
+}
+
+.parent-title {
+  background-color: #EFEFEF;
+}
+
+.title-element {
+  margin: 0;
+  justify-content: center;
+  display: flex;
+  border: 20px solid white;
+  background: white;
+  text-align: center;
+}
+
+.copy-parent {
+  margin: 2rem;
+}
+
+.copy-element {
+  margin: auto;
+  padding: 2rem;
+  max-width: 800px;
+  background-color: #EFEFEF;
+  border: 0.4rem inset #EFEFEF;
+  border-color: #858585 #767676;
+  text-align: center;
+}
+
+.copy-font {
+  font-family: Ubuntu, sans-serif;
+}
+
+.title-font {
+  font-family: Superscript, sans-serif;
 }

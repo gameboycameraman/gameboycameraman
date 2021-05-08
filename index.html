@@ -5,9 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta content-type="application/force-download">
   <link rel="stylesheet" type="text/css" href="index.css"/>
+  <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Ubuntu" />
   <title>Gameboycameraman's Camera</title>
 </head>
 <body>
+  <div class="parent-title">
+    <h2 class="title-element title-font">
+      Gameboycameraman's Camera
+    </h2>
+  </div>
   <div class="container">
     <div class="image-parent center-element">
       <video class="hide-element" muted playsinline></video>
@@ -23,6 +29,24 @@
     <div id="image-gallery" class="gallery">
     </div>
   </div>
+  <div class="copy-parent">
+    <div class="copy-element">
+      <h3 class="title-font">Hi and welcome to my Game Boy Camera inspired project.</h3>
+      <p class="copy-font">I've created this free experiment for everyone and I hope a lot of people will have a chance to play with these pixels!</p>
+      <p class="copy-font">You can take a picture and then save it. Saving it will display the picture on this page, and you will then be able to save it on your phone or computer.</p>
+      <p class="copy-font">You will find a video tutorial on my instagram profile <a href="https://www.instagram.com/gameboycameraman" target="_blank">Gameboycameraman</a>.</p>
+      <p class="copy-font">If you appreciate the work I've done here and what I do on my Instagram, think about supporting me through my <a href="https://ko-fi.com/gameboycameraman" target="_blank">ko-fi!</a></p>
+    </div>
+  </div>
   <script src="index.js"></script>
+  <script src='https://storage.ko-fi.com/cdn/scripts/overlay-widget.js'></script>
+  <script>
+    kofiWidgetOverlay.draw('gameboycameraman', {
+      'type': 'floating-chat',
+      'floating-chat.donateButton.text': 'Support me',
+      'floating-chat.donateButton.background-color': '#5cb85c',
+      'floating-chat.donateButton.text-color': '#fff'
+    });
+  </script>
 </body>
 </html>
