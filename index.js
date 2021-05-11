@@ -31,7 +31,6 @@ video.addEventListener('play', () => {
       ctx.drawImage(video, xOffset, yOffset, drawingWidth, drawingHeight);
       colourOrderedDithering(gbNB, ctx, width, height);
     }, 200);
-    // requestAnimationFrame(step);
   }
   requestAnimationFrame(step);
 });
@@ -61,117 +60,6 @@ const scaleImage = (image) => {
 
 const setImageWidth = (originalHeight, originalWidth, newHeight) => {
   return Math.floor((originalWidth * newHeight) / originalHeight);
-}
-
-var grayscale = function() {
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
-  for (var i = 0; i < data.length; i += 4) {
-    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-    data[i]     = avg; // red
-    data[i + 1] = avg; // green
-    data[i + 2] = avg; // blue
-  }
-  ctx.putImageData(imageData, 0, 0);
-};
-
-var blackOrWhite = function() {
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
-  for (var i = 0; i < data.length; i += 4) {
-    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-    if (avg >= 128) {
-      data[i]     = 255; // red
-      data[i + 1] = 255; // green
-      data[i + 2] = 255; // blue
-    } else {
-      data[i]     = 0; // red
-      data[i + 1] = 0; // green
-      data[i + 2] = 0; // blue
-    }
-  }
-  ctx.putImageData(imageData, 0, 0);
-};
-
-
-// For each dot in our grayscale image, we generate
-// a random number in the range 0 - 255: if the random number is greater than
-// the image value at that dot, the display device plots the dot white;
-// otherwise, it plots it black.
-
-var randomDithering = function() {
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
-  for (var i = 0; i < data.length; i += 4) {
-    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-    var random = Math.floor(Math.random() * Math.floor(256));
-    if (avg >= random) {
-      data[i]     = 255; // red
-      data[i + 1] = 255; // green
-      data[i + 2] = 255; // blue
-    } else {
-      data[i]     = 0; // red
-      data[i + 1] = 0; // green
-      data[i + 2] = 0; // blue
-    }
-  }
-  ctx.putImageData(imageData, 0, 0);
-};
-
-// THE IMAGE DOT IS MAPPED ONLY TO ONE PIXEL IN THE
-// PATTERN.  Returning to our example of a 3 x 3 pattern, this means that we
-// would be mapping NINE image dots into this pattern.
-
-// The simplest way to do this in programming is to map the X and Y coordinates
-// of each image dot into the pixel (X mod 3, Y mod 3) in the pattern.
-
-// we can derive an effective mathematical algorithm that can be used to plot
-// the correct pixel patterns.  Because each of the patterns above is a
-// superset of the previous, we can express the patterns in a compact array
-// form as the order of pixels added.
-
-// given an index position of a pixel how do I get the x,y coordinates
-// scale 
-
-var orderedDitheringThreeByThreeClustered = function() {
-  const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-  const data = imageData.data;
-  var thresholdPalette = [
-    [8, 3, 4],
-    [6, 1, 2],
-    [7, 5, 9]
-  ];
-
-  var thresholdPalette = [
-    [1, 7, 4],
-    [5, 8, 3],
-    [6, 2, 9]
-  ];
-
-  var scaleThreshold = function(threshold) {
-    return Math.round(threshold * (255/ thresholdPalette.flat().length));
-  }
-
-  newThreshold = thresholdPalette.map(palette => palette.map(scaleThreshold));
-
-  for (var i = 0; i < data.length; i += 4) {
- 
-    var x = ((i / 4) % canvas.width) % 3;
-    var y = (Math.floor((i / 4) / canvas.width)) % 3;
-
-    var avg = (data[i] + data[i + 1] + data[i + 2]) / 3;
-
-    if (avg >= newThreshold[y][x]) {
-      data[i]     = 255; // red
-      data[i + 1] = 255; // green
-      data[i + 2] = 255; // blue
-    } else {
-      data[i]     = 0; // red
-      data[i + 1] = 0; // green
-      data[i + 2] = 0; // blue
-    }
-  }
-  ctx.putImageData(imageData, 0, 0);
 }
 
 const gbGreens = [
